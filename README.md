@@ -4,7 +4,7 @@ iap-validator can be used to validate base64 encoded iTunes in app purchase rece
 
 If you haven't read the [Apple StoreKit Guide](http://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction/Introduction.html) do that first to get an understanding of StoreKit.
 
-Next take a look at this greate [introduction to in app purchases](http://www.raywenderlich.com/2797/introduction-to-in-app-purchases) by Ray Wenderlich.
+Next take a look at this great [introduction to in app purchases](http://www.raywenderlich.com/2797/introduction-to-in-app-purchases) by Ray Wenderlich.
 
 Once you are able to make purchases you are ready to use this gem. Check out the [reference for validating receipts](http://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/StoreKitGuide/VerifyingStoreReceipts/VerifyingStoreReceipts.html) if you want to know more details of how the gem works.
 
