@@ -34,11 +34,7 @@ else
 end
 
 # Optional 3rd parameter if validating Auto-Renewal Subscriptions
-if IAPValidator::IAPValidator.valid?(receipt_data, true, "shared_secret_string")
-  puts "Receipt is valid"
-else
-  puts "Receipt is not valid"
-end
+valid = IAPValidator::IAPValidator.valid?(receipt_data, true, "shared_secret_string")
 
 # You can also get more information about the receipt
 resp = IAPValidator::IAPValidator.validate(receipt_data, true)
