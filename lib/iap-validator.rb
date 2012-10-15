@@ -17,7 +17,7 @@ module IAPValidator
     def self.validate(data, sandbox = false, password = nil)
       base_uri SANDBOX_URL if sandbox
 
-      json = password.nil? 
+      json = password.nil? ? 
         { 'receipt-data' => data } : 
         { 'receipt-data' => data, 'password' => password }
 
