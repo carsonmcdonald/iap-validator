@@ -27,6 +27,7 @@ require 'iap-validator'
 receipt_data = 'PUT THE BASE64 ENCODED RECEIPT HERE'
 
 # Is this a valid receipt?
+# in this example, passing true tells IAPValidator to use use iTunes Connect in production
 if IAPValidator::IAPValidator.valid?(receipt_data, true)
   puts "Receipt is valid"
 else
@@ -34,6 +35,7 @@ else
 end
 
 # You can also get more information about the receipt
+# in this example, passing true tells IAPValidator to use use iTunes Connect in production
 resp = IAPValidator::IAPValidator.validate(receipt_data, true)
 puts resp["status"]
 ```
