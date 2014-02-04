@@ -14,10 +14,14 @@ module IAPValidator
     headers 'Content-Type' => 'application/json'
     format :json
 
-    def self.validate(data, sandbox = false)
+    def self.validate(data, sandbox = false, password = nil)
       base_uri SANDBOX_URL if sandbox
 
-      resp = post('/verifyReceipt', :body => MultiJson.encode({ 'receipt-data' => data }) )
+      json = password.nil? ? 
+        { 'receipt-data' => data } : 
+        { 'receipt-data' => data, 'password' => password }
+
+      resp = post('/verifyReceipt', :body => MultiJson.encode(json) )
 
       if resp.code == 200
         MultiJson.decode(resp.body())
