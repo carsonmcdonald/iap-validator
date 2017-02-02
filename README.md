@@ -34,6 +34,9 @@ else
   puts "Receipt is not valid"
 end
 
+#include shared secret string if evaluating purchase subscriptions
+valid = IAPValidator::IAPValidator.valid?(receipt_data, true, "SHARED_SECRET")
+
 # You can also get more information about the receipt
 # in this example, passing true tells IAPValidator to use iTunes Connect in production
 resp = IAPValidator::IAPValidator.validate(receipt_data, true)
