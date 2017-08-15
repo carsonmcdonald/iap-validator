@@ -1,4 +1,4 @@
-iap-validator can be used to validate base64 encoded iTunes in app purchase receipts.
+iap-validator v2.0.0 can be used to validate base64 encoded iTunes in app purchase receipts.
 
 ## Getting started
 
