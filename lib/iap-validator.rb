@@ -14,7 +14,7 @@ module IAPValidator
     headers 'Content-Type' => 'application/json'
     format :json
 
-    def self.validate(data, sandbox = false, password = nil)
+    def self.validate(data, sandbox = false, password = nil, &on_error)
       base_uri SANDBOX_URL if sandbox
 
       json = password.nil? ?
@@ -26,6 +26,7 @@ module IAPValidator
       if resp.code == 200
         MultiJson.decode(resp.body())
       else
+        on_error.call(resp) if block_given?
         nil
       end
     end
