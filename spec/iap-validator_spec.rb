@@ -7,11 +7,13 @@ RSpec.describe IAPValidator::IAPValidator do
     expected_response = { "cool" => 123 }
     expected_response_str = MultiJson.dump(expected_response)
 
-    stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
+    stub = stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
         with(body: { 'receipt-data' => receipt_data }).
         and_return(status: 200, body: expected_response_str)
 
     resp = IAPValidator::IAPValidator.validate(receipt_data, true)
+
+    expect(stub).to have_been_requested
     expect(resp).to eq(expected_response)
   end
 
@@ -20,7 +22,7 @@ RSpec.describe IAPValidator::IAPValidator do
     expected_response = { "cool" => 123 }
     expected_response_str = MultiJson.dump(expected_response)
 
-    stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
+    stub = stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
         with(body: { 'receipt-data' => receipt_data }).
         and_return(status: 400, body: expected_response_str)
 
@@ -29,6 +31,7 @@ RSpec.describe IAPValidator::IAPValidator do
       error = error_resp
     end
 
+    expect(stub).to have_been_requested
     expect(resp).to be_nil
     expect(error).to_not be_nil
     expect(error.code).to eq(400)
@@ -40,13 +43,14 @@ RSpec.describe IAPValidator::IAPValidator do
     expected_response = { "cool" => 123 }
     expected_response_str = MultiJson.dump(expected_response)
 
-    stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
+    stub = stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
         with(body: { 'receipt-data' => receipt_data }).
         and_return(status: 400, body: expected_response_str)
 
     error = nil
     resp = IAPValidator::IAPValidator.validate(receipt_data, true)
 
+    expect(stub).to have_been_requested
     expect(resp).to be_nil
     expect(error).to be_nil
   end
