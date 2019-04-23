@@ -1,6 +1,7 @@
 require "iap-validator/version"
 
 require 'httparty'
+require 'multi_json'
 
 module IAPValidator
   class IAPValidator
