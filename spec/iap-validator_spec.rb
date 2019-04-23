@@ -17,7 +17,7 @@ RSpec.describe IAPValidator::IAPValidator do
     expect(resp).to eq(expected_response)
   end
 
-  it 'should validate with error callback' do
+  it 'should validate with error' do
     receipt_data = 'randomreceiptdata'
     expected_response = { "cool" => 123 }
     expected_response_str = MultiJson.dump(expected_response)
@@ -26,33 +26,10 @@ RSpec.describe IAPValidator::IAPValidator do
         with(body: { 'receipt-data' => receipt_data }).
         and_return(status: 400, body: expected_response_str)
 
-    error = nil
-    resp = IAPValidator::IAPValidator.validate(receipt_data, true) do |error_resp|
-      error = error_resp
-    end
-
-    expect(stub).to have_been_requested
-    expect(resp).to be_nil
-    expect(error).to_not be_nil
-    expect(error.code).to eq(400)
-    expect(error.body).to eq(expected_response_str)
-  end
-
-  it 'should validate without error callback' do
-    receipt_data = 'randomreceiptdata'
-    expected_response = { "cool" => 123 }
-    expected_response_str = MultiJson.dump(expected_response)
-
-    stub = stub_request(:post, IAPValidator::IAPValidator::SANDBOX_URL + '/verifyReceipt').
-        with(body: { 'receipt-data' => receipt_data }).
-        and_return(status: 400, body: expected_response_str)
-
-    error = nil
     resp = IAPValidator::IAPValidator.validate(receipt_data, true)
 
     expect(stub).to have_been_requested
     expect(resp).to be_nil
-    expect(error).to be_nil
   end
 
 end
