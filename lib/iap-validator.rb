@@ -1,34 +1,33 @@
-require "iap-validator/version"
+require 'iap-validator/version'
 
-require 'httparty'
 require 'multi_json'
+require 'typhoeus'
 
 module IAPValidator
   class IAPValidator
-    include HTTParty
+    SANDBOX_URL = 'https://sandbox.itunes.apple.com'.freeze
+    PRODUCTION_URL = 'https://buy.itunes.apple.com'.freeze
 
-    SANDBOX_URL = 'https://sandbox.itunes.apple.com'
-    PRODUCTION_URL = 'https://buy.itunes.apple.com'
-
-    base_uri PRODUCTION_URL
-
-    headers 'Content-Type' => 'application/json'
-    format :json
+    HEADERS = {
+      'Content-Type': 'application/json'
+    }.freeze
 
     def self.validate(data, sandbox = false, password = nil)
-      base_uri SANDBOX_URL if sandbox
+      base_uri = sandbox ? SANDBOX_URL : PRODUCTION_URL
 
-      json = password.nil? ?
-        { 'receipt-data' => data } :
-        { 'receipt-data' => data, 'password' => password }
+      json = if password.nil?
+                { 'receipt-data' => data }
+             else
+                { 'receipt-data' => data, 'password' => password }
+             end
 
-      resp = post('/verifyReceipt', :body => MultiJson.encode(json))
+      uri = URI.join(base_uri, '/verifyReceipt')
 
-      if resp.code == 200
-        MultiJson.decode(resp.body())
-      else
-        nil
-      end
+      resp = Typhoeus.post(uri, body: MultiJson.encode(json), headers: HEADERS)
+
+      return nil unless resp.code == 200
+
+      MultiJson.decode(resp.body)
     end
 
     def self.valid?(data, sandbox = false)
